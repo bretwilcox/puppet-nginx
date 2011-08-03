@@ -1,0 +1,6 @@
+Puppet module for Nginx
+
+- Supports PHP
+- Supports Passenger
+
+NGINX will be installed using Passenger and Passenger is enabled by default.
