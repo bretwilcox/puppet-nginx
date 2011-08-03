@@ -1,0 +1,13 @@
+/opt/nginx/logs/*.log {
+	daily
+	rotate 14
+	compress
+	olddir /opt/nginx/logs/archive/
+	prerotate
+		/opt/nginx/sbin/nginx -s stop
+	endscript
+	postrotate
+		/opt/nginx/sbin/nginx
+	endscript
+}
+

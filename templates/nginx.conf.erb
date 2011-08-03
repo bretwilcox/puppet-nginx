@@ -1,0 +1,56 @@
+
+worker_processes  <%= worker_processes %>;
+
+events {
+	worker_connections <%= worker_connections %>;
+}
+
+http {
+
+	passenger_root <%= ruby_install_path %>/lib/ruby/gems/1.8/gems/passenger-<%= passenger_version %>;
+	passenger_ruby <%= ruby_install_path %>/bin/ruby;
+	passenger_max_pool_size <%= passenger_max_pool_size %>;
+	passenger_min_instances <%= passenger_min_instances %>;
+	passenger_friendly_error_pages <%= passenger_friendly_error_pages %>;
+
+	include       mime.types;
+	default_type  application/octet-stream;
+
+	sendfile        on;
+
+	keepalive_timeout  65;
+
+	server {
+		listen       <%= port %>;
+		server_name  localhost;
+
+		location / {
+			root   html;
+			index  index.html index.htm;
+		}
+
+		# redirect server error pages to the static page /50x.html
+		error_page   500 502 503 504  /50x.html;
+		location = /50x.html {
+			root   html;
+		}
+		
+		# PHP support
+		<% if php_support == 'present' then %>
+		location ~ \.php$ {
+  			include fastcgi_params;
+  			fastcgi_pass 127.0.0.1:9000;
+			fastcgi_index index.php;
+			fastcgi_param SCRIPT_FILENAME /opt/nginx/html$fastcgi_script_name;
+		}
+		<% end %>
+
+		# Additional config files (server rules only)
+		include /opt/nginx/conf/extras/*;
+
+	}
+
+	# Virtual hosts
+	include /opt/nginx/sites-enabled/*;
+
+}
