@@ -9,17 +9,11 @@ class nginx ( $passenger_enabled = 'true', $passenger_friendly_error_pages = 'of
 		require 	=> Package['libcurl4-openssl-dev'],
 	}
 
-	# Get rid off Apache2
-	exec { "remove-apache2":
-		command	=> "/usr/bin/apt-get -y remove --purge apache2-mpm-worker apache2-threaded-dev apache2-utils apache2.2-common ruby1.8 && /usr/bin/apt-get -y autoremove",
-		onlyif	=> "/usr/bin/test -e /usr/sbin/apache2ctl"
-	}
-
 	# Install Nginx
 	exec { "passenger-install-nginx-module":
 		command => "$ruby_install_path/bin/passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx", 
 		creates => "/opt/nginx/sbin/nginx", 
-		require => [Package['passenger', 'libcurl4-openssl-dev'], Exec["remove-apache2"]]
+		require => [Package['passenger', 'libcurl4-openssl-dev']]
 	} 
 	
 	# Vhost dir	
