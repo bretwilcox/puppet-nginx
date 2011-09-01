@@ -1,6 +1,6 @@
 # nginx.pp
 
-class nginx ( $passenger_enabled = 'true', $passenger_friendly_error_pages = 'off', $passenger_max_pool_size = 30, $passenger_min_instances = 1, $passenger_version = '3.0.7', $php_support = 'absent', $port = 80, $ruby_install_path = '/usr/local', $worker_connections = 1024, $worker_processes = 10, $logrotate = 'present' ) {
+class nginx ( $passenger_enabled = 'true', $passenger_friendly_error_pages = 'off', $passenger_max_pool_size = 30, $passenger_min_instances = 1, $passenger_version = 'latest', $php_support = 'absent', $port = 80, $ruby_install_path = '/usr/local', $worker_connections = 1024, $worker_processes = 10, $logrotate = 'present' ) {
 
 	package { 'libcurl4-openssl-dev': ensure => 'installed' }
 	package { 'passenger':
